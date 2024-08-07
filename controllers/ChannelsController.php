@@ -2,8 +2,10 @@
 
 namespace app\controllers;
 
+use app\components\TelegramBot;
 use app\models\ChannelForm;
 use Yii;
+use yii\db\Exception;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 
@@ -28,21 +30,28 @@ class ChannelsController extends Controller
         ];
     }
 
-    public function actionCreate(): string
+    public function actionCreate()
     {
         $model = new ChannelForm();
 
         if ($model->load(Yii::$app->request->post())) {
-            $channel = new ChannelForm();
-            $channel->channel_name = $model->channel_name;
-            $channel->description = $model->description;
-            $channel->link = $model->link;
-            $channel->status = $model->status;
-            $channel->created_at = $model->created_at;
-            $channel->updated_at = $model->updated_at;
-            $channel->save();
+            $model->channel_name = Yii::$app->request->post('ChannelForm')['channel_name'];
+            $model->channel_id = Yii::$app->request->post('ChannelForm')['channel_id'];
+            $model->channel_bot = Yii::$app->request->post('ChannelForm')['channel_bot'];
+            $model->responsible = Yii::$app->user->id;
+            $model->invite_link = Yii::$app->request->post('ChannelForm')['invite_link'];
+            $model->fb_pixel = implode(',', Yii::$app->request->post('ChannelForm')['selectedPixels']);
+            $model->telegram_account = Yii::$app->request->post('ChannelForm')['telegram_account'];
+            $model->created_at = date('Y-m-d H:i:s');
+            $model->updated_at = date('Y-m-d H:i:s');
 
-            return $this->redirect(['index']);
+            if ($model->save()) {
+                $this->runBot($model->channel_bot);
+                return $this->redirect(['index']);
+            } else {
+                Yii::error('Save failed: ' . json_encode($model->errors), __METHOD__);
+                throw new \yii\web\ServerErrorHttpException('Ошибка при сохранении данных: ' . json_encode($model->errors));
+            }
         }
 
         if (Yii::$app->request->isAjax) {
@@ -54,6 +63,17 @@ class ChannelsController extends Controller
         return $this->render('create', [
             'model' => $model,
         ]);
+    }
+
+    protected function runBot($botId)
+    {
+        $bot = new TelegramBot($botId);
+        try {
+            $bot->start();
+        } catch (\Exception $e) {
+            Yii::error('Error starting bot: ' . $e->getMessage(), __METHOD__);
+            throw new \yii\web\ServerErrorHttpException('Ошибка при запуске бота: ' . $e->getMessage());
+        }
     }
 
     public function actionIndex(): string

@@ -10,7 +10,7 @@ use yii\data\ActiveDataProvider;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 
-class PixelsGridView extends Widget
+class ChannelsGridView extends Widget
 {
     public $owner;
 
@@ -19,11 +19,11 @@ class PixelsGridView extends Widget
 
         if ($this->owner === 'All') {
             $dataProvider = new ActiveDataProvider([
-                'query' => \app\models\Pixel::find(),
+                'query' => \app\models\ChannelForm::find(),
             ]);
         } else {
             $dataProvider = new ActiveDataProvider([
-                'query' => \app\models\Pixel::find()->where(['owner' => Yii::$app->user->identity->username]),
+                'query' => \app\models\ChannelForm::find()->where(['owner' => Yii::$app->user->identity->username]),
             ]);
         }
 
@@ -33,16 +33,32 @@ class PixelsGridView extends Widget
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
                 [
-                    'attribute' => 'owner',
-                    'label' => 'Владелец',
+                    'attribute' => 'channel_id',
+                    'label' => 'ID канала',
                 ],
                 [
-                    'attribute' => 'channel',
-                    'label' => 'Канал',
+                    'attribute' => 'channel_name',
+                    'label' => 'Название канала',
                 ],
                 [
-                    'attribute' => 'pixel_id',
+                    'attribute' => 'fb_pixel',
                     'label' => 'ID пикселя',
+                ],
+                [
+                    'attribute' => 'telegram_account',
+                    'label' => 'Аккаунт телеграм',
+                ],
+                [
+                    'attribute' => 'responsible',
+                    'label' => 'Ответственный',
+                ],
+                [
+                    'attribute' => 'invite_link',
+                    'label' => 'Ссылка на канал',
+                ],
+                [
+                    'attribute' => 'channel_bot',
+                    'label' => 'Токен бота',
                 ],
                 [
                     'attribute' => 'created_at',

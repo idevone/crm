@@ -4,38 +4,35 @@ namespace app\models;
 
 use yii\db\ActiveRecord;
 
+/**
+ * ChannelForm model
+ *
+ * @property integer $id
+ * @property string $channel_id
+ * @property string $channel_name
+ * @property string $channel_bot
+ * @property string $responsible
+ * @property string $invite_link
+ * @property string $fb_pixel
+ * @property string $telegram_account
+ * @property string $created_at
+ * @property string $updated_at
+ */
+
 class ChannelForm extends ActiveRecord
 {
-    public $channel_name;
-    public $description;
-    public $channel_link;
-    public $channel_pixel;
-    public $status;
-    public $created_at;
-    public $updated_at;
+    public array $selectedPixels = [];
 
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%telegram_channel}}';
     }
-    public function rules()
-    {
-        return [
-            [['channel_name', 'description', 'link', 'status'], 'required'],
-            [['channel_name', 'description', 'link'], 'string'],
-        ];
-    }
 
-    public function attributeLabels()
-    {
-        return [
-            'channel_name' => 'Название канала',
-            'description' => 'Описание',
-            'link' => 'Ссылка',
-            'status' => 'Статус',
-            'created_at' => 'Дата создания',
-            'updated_at' => 'Дата обновления',
-        ];
-    }
-
+//    public function rules()
+//    {
+//        return [
+//            [['created_at', 'updated_at'], 'required'],
+//            [['created_at', 'updated_at'], 'safe'],
+//        ];
+//    }
 }

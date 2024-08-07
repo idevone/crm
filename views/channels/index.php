@@ -1,5 +1,6 @@
 <?php
 
+use app\components\ChannelsGridView;
 use yii\bootstrap5\Modal;
 use yii\bootstrap5\Tabs;
 use yii\helpers\Html;
@@ -16,8 +17,9 @@ $this->title = 'Telegram каналы';
         <?= Html::button('Добавить новый канал', ['value' => Url::to(['channels/create']), 'class' => 'btn btn-primary', 'id' => 'modalButton']) ?>
     </p>
 
-
     <?php
+    echo ChannelsGridView::widget(['owner' => 'All']);
+
     Modal::begin([
         'title' => '<h4>Добавление новой записи</h4>',
         'id' => 'modal',

@@ -1,0 +1,19 @@
+Message: Ошибка при запуске бота: Client error: `GET https://api.telegram.org/bot7378948848:AAGsMrHRTi7WCu6-qMPo0MWFZl3A0W1Ii7Q/sendMessage?chat_id=%5B792280460%2C792280460%5D&text=text` resulted in a `400 Bad Request` response:
+{"ok":false,"error_code":400,"description":"Bad Request: chat not found"}
+
+
+File: C:\Users\dkarp\IdeaProjects\crm\controllers\ChannelsController.php(75)
+
+Trace: 
+#0 C:\Users\dkarp\IdeaProjects\crm\controllers\ChannelsController.php(49): app\controllers\ChannelsController->runBot('7378948848:AAGs...')
+#1 [internal function]: app\controllers\ChannelsController->actionCreate()
+#2 C:\Users\dkarp\IdeaProjects\crm\vendor\yiisoft\yii2\base\InlineAction.php(57): call_user_func_array(Array, Array)
+#3 C:\Users\dkarp\IdeaProjects\crm\vendor\yiisoft\yii2\base\Controller.php(178): yii\base\InlineAction->runWithParams(Array)
+#4 C:\Users\dkarp\IdeaProjects\crm\vendor\yiisoft\yii2\base\Module.php(552): yii\base\Controller->runAction('create', Array)
+#5 C:\Users\dkarp\IdeaProjects\crm\vendor\yiisoft\yii2\web\Application.php(103): yii\base\Module->runAction('channels/create', Array)
+#6 C:\Users\dkarp\IdeaProjects\crm\vendor\yiisoft\yii2\base\Application.php(384): yii\web\Application->handleRequest(Object(yii\web\Request))
+#7 C:\Users\dkarp\IdeaProjects\crm\web\index.php(12): yii\base\Application->run()
+#8 {main}
+
+Update: 
+_csrf=RBe7KjNd9bpfzGeaxbd160PTdqGLoKdgY2WPZFV9tmgmf8J-ZyidyCmOAfzy0x67BupGkOHC3isbEcpWGSrOEA%3D%3D&ChannelForm%5Bchannel_name%5D=7378948848&ChannelForm%5Bchannel_id%5D=7378948848&ChannelForm%5Binvite_link%5D=7378948848&ChannelForm%5Btelegram_account%5D=7378948848&ChannelForm%5Bchannel_bot%5D=7378948848%3AAAGsMrHRTi7WCu6-qMPo0MWFZl3A0W1Ii7Q&ChannelForm%5BselectedPixels%5D=&ChannelForm%5BselectedPixels%5D%5B%5D=690315589811032
