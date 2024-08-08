@@ -49,16 +49,15 @@ class ChannelsGridView extends Widget
                     'label' => 'Аккаунт телеграм',
                 ],
                 [
-                    'attribute' => 'responsible',
-                    'label' => 'Ответственный',
-                ],
-                [
                     'attribute' => 'invite_link',
                     'label' => 'Ссылка на канал',
                 ],
                 [
                     'attribute' => 'channel_bot',
                     'label' => 'Токен бота',
+                    'value' => function($model) {
+                        return Html::encode(substr($model->channel_bot, 0, 5) . '...' . substr($model->channel_bot, -5));
+                    },
                 ],
                 [
                     'attribute' => 'created_at',

@@ -2,12 +2,12 @@
 
 namespace app\controllers;
 
-use app\components\TelegramBot;
 use app\models\ChannelForm;
 use Yii;
 use yii\db\Exception;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use GuzzleHttp\Client;
 
 class ChannelsController extends Controller
 {
@@ -46,7 +46,23 @@ class ChannelsController extends Controller
             $model->updated_at = date('Y-m-d H:i:s');
 
             if ($model->save()) {
-                $this->runBot($model->channel_bot);
+                Yii::debug('Channel saved: ' . json_encode($model->attributes), __METHOD__);
+
+                $client = new Client();
+
+                $apiUrl = 'http://localhost:8000/bots';
+                $botConfig = [
+                    'channel_name' => $model->channel_name,
+                    'channel_id' => $model->channel_id,
+                    'invite_link' => $model->invite_link,
+                    'pixel_id' => $model->fb_pixel,
+                    'token' => $model->channel_bot
+                ];
+
+                $response = $client->post($apiUrl, [
+                    'json' => $botConfig
+                ]);
+
                 return $this->redirect(['index']);
             } else {
                 Yii::error('Save failed: ' . json_encode($model->errors), __METHOD__);

@@ -20,7 +20,8 @@
         "kartik-v/yii2-widget-select2": "@dev",
         "yiisoft/yii2-bootstrap5": "^2.0",
         "irazasyed/telegram-bot-sdk": "^3.14",
-        "telegram-bot-php/core": "^1.1"
+        "telegram-bot-php/core": "^1.1",
+        "guzzlehttp/guzzle": "^7.9"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
