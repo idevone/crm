@@ -43,7 +43,9 @@ class ChannelsController extends Controller
             $model->responsible = Yii::$app->user->id;
             $model->invite_link = Yii::$app->request->post('ChannelForm')['invite_link'];
 //            $model->fb_pixel = implode(',', Yii::$app->request->post('ChannelForm')['selectedPixels']);
-            $model->fb_pixel = implode(',', Yii::$app->request->post('ChannelForm')['selectedPixels']) || null;
+            if ($model->fb_pixel === null) {
+                $model->fb_pixel = '';
+            }
             $model->telegram_account = Yii::$app->request->post('ChannelForm')['telegram_account'];
             $model->created_at = date('Y-m-d H:i:s');
             $model->updated_at = date('Y-m-d H:i:s');
