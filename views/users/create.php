@@ -24,10 +24,11 @@ use yii\widgets\ActiveForm;
 
         <?= $form->field($model, 'role')->dropDownList([
             'Admin' => 'Администратор',
-            'TeamleadMediabuyer' => 'Тимлид медиабайеров',
-            'TeamleadProcessor' => 'Тимлид обработчиков',
+            'TeamLeadMediabuyer' => 'Тимлид медиабайеров',
+            'TeamLeadProcessor' => 'Тимлид обработчиков',
             'Mediabuyer' => 'Медиабайер',
-            'Processor' => 'Обработчик'
+            'Processor' => 'Обработчик',
+            'Financial' => 'Финансист',
         ], ['id' => 'role-dropdown'])->label('Роль пользователя') ?>
 
         <div class="form-group">

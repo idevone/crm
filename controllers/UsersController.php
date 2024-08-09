@@ -83,6 +83,20 @@ class UsersController extends Controller
         ]);
     }
 
+    public function actionDelete($id)
+    {
+        $model = User::find()->where(['id' => $id])->one();
+
+        if (Yii::$app->request->post()) {
+            $model->delete();
+            return $this->redirect(['index']);
+        }
+
+        return $this->render('delete', [
+            'model' => $model,
+        ]);
+    }
+
     public function actionProcessors(): string
     {
         return $this->render('processors');
