@@ -1,4 +1,3 @@
-version: '3.7'
 services:
   php:
     image: yiisoftware/yii2-php:8.2-apache
@@ -6,14 +5,14 @@ services:
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
       - ./:/app:delegated
     ports:
-      - '8000:80'
+      - '80:80'
 
-  pgsql:
-    image: postgres:latest
-    restart: always
-    environment:
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - '5432:5432'
+#  pgsql:
+#    image: postgres:latest
+#    restart: always
+#    environment:
+#      POSTGRES_DB: postgres
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: postgres
+#    ports:
+#      - '5432:5432'
