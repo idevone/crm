@@ -83,17 +83,6 @@ class ChannelsController extends Controller
         ]);
     }
 
-//    protected function runBot($botId)
-//    {
-//        $bot = new TelegramBot($botId);
-//        try {
-//            $bot->start();
-//        } catch (\Exception $e) {
-//            Yii::error('Error starting bot: ' . $e->getMessage(), __METHOD__);
-//            throw new \yii\web\ServerErrorHttpException('Ошибка при запуске бота: ' . $e->getMessage());
-//        }
-//    }
-
     public function actionIndex(): string
     {
         return $this->render('index');
@@ -101,17 +90,44 @@ class ChannelsController extends Controller
 
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['success' => true];
+        $model = ChannelForm::findOne($id);
+        if (!$model) {
+            throw new NotFoundHttpException('Модель с данным ID не найдена.');
         }
 
-        return $this->renderAjax('update', [
+        if ($model->load(Yii::$app->request->post())) {
+            $model->channel_name = Yii::$app->request->post('ChannelForm')['channel_name'];
+            $model->channel_id = Yii::$app->request->post('ChannelForm')['channel_id'];
+            $model->channel_bot = Yii::$app->request->post('ChannelForm')['channel_bot'];
+            $model->responsible = Yii::$app->user->id;
+            $model->invite_link = Yii::$app->request->post('ChannelForm')['invite_link'];
+            if ($model->fb_pixel === null) {
+               $model->fb_pixel = '';
+            } else {
+                $model->fb_pixel = implode(',', Yii::$app->request->post('ChannelForm')['selectedPixels']);
+            }
+            $model->telegram_account = Yii::$app->request->post('ChannelForm')['telegram_account'];
+            $model->updated_at = date('Y-m-d H:i:s');
+
+            if ($model->save()) {
+                return $this->redirect(['index']);
+            }
+        }
+
+        // Если это запрос для загрузки формы, проверяем, AJAX ли это запрос
+        if (Yii::$app->request->isAjax) {
+            return $this->renderAjax('update', [
+                'model' => $model,
+            ]);
+        }
+
+        // Обычная загрузка страницы
+        return $this->render('update', [
             'model' => $model,
         ]);
     }
+
+
 
 
     public function actionDelete($id)

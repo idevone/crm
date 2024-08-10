@@ -2,7 +2,6 @@
 
 use app\components\ChannelsGridView;
 use yii\bootstrap5\Modal;
-use yii\bootstrap5\Tabs;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -14,37 +13,40 @@ $this->title = 'Telegram каналы';
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p class="mt-5">
-        <?= Html::button('Добавить новый канал', ['value' => Url::to(['channels/create']), 'class' => 'btn btn-primary', 'id' => 'modalButton']) ?>
+        <?= Html::button('Добавить новый канал', ['value' => Url::to(['channels/create']), 'class' => 'btn btn-primary', 'id' => 'modalButtonCreate']) ?>
     </p>
 
     <?php
     echo ChannelsGridView::widget(['owner' => 'All']);
 
+    // Определяем одно модальное окно для создания и обновления
     Modal::begin([
-        'title' => '<h4>Добавление новой записи</h4>',
+        'title' => '<h4>Операция</h4>',
         'id' => 'modal',
         'size' => 'modal-lg',
     ]);
 
-    echo "<div id='modalContent'>";
-    $this->render('create', ['model' => new \app\models\ChannelForm()]);
-    echo "</div>";
-    ?>
+    echo "<div id='modalContent'></div>";
 
-    <?php
     Modal::end();
-    ?>
-    <?php
 
     $script = <<< JS
         $(function() {
-            $('#modalButton').click(function() {
+            // Открытие модального окна для создания новой записи
+            $('#modalButtonCreate').click(function() {
+                $('#modal').modal('show')
+                    .find('#modalContent')
+                    .load($(this).attr('value'));
+            });
+
+            // Открытие модального окна для обновления записи
+            $(document).on('click', '.modalButtonUpdate', function() {
                 $('#modal').modal('show')
                     .find('#modalContent')
                     .load($(this).attr('value'));
             });
         });
-        JS;
+    JS;
     $this->registerJs($script);
     ?>
 </div>
